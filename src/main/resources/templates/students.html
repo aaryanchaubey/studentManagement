@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet"
+	href="https://maxcdn.bootsthapcdn.com/bootsthap/4.0.0/css/bootsthap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">  -->
+    <style>
+        .styled-table {
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            /*min-width: 400px;*/
+            max-width: max-content;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .styled-table thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+        }
+
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+        .styled-table tbody tr.active-row {
+            font-weight: bold;
+            color: #009879;
+        }
+
+        
+
+        body {
+            display: flex;
+            /* flex-direction: row; */
+            align-items: center;
+            justify-content: center;
+            height: vh;
+            transform-style: preserve-3d;
+            transform: perspective(800px);
+            /* background: black; */
+            /* min-height: 100vh; */
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 1.8em;
+        }
+
+        .button {
+            margin-top: 1.1em;
+        }
+
+
+
+        h1 {
+            position: relative;
+            /* margin-right: 2em; */
+            font-size: 2.6em;
+            margin-top: 1em;
+            margin-left: 0.5em;
+            letter-spacing: 2px;
+            color: rgb(32, 30, 30);
+            text-transform: uppercase;
+            width: 100%;
+
+            -webkit-box-reflect: below 1px linear-gradient(transparent, white);
+            line-height: .5em;
+            outline: none;
+            animation: animate 5s linear infinite alternate-reverse;
+        }
+
+        @keyframes animate {
+            0% {
+                color: rgb(37, 35, 35);
+                text-shadow: none;
+            }
+
+            50% {
+                text-shadow: 0 0 5px rgb(128, 120, 120),
+                    0 0 20px rgb(122, 115, 115),
+                    0 0 40px rgb(119, 109, 109),
+                    0 0 80px rgb(51, 48, 48),
+                    0 0 160px rgb(49, 46, 46)
+            }
+
+            100% {
+                text-shadow: 0 0 5px white,
+                    0 0 20px cyan,
+                    0 0 40px cyan,
+                    0 0 80px cyan,
+                    0 0 160px cyan
+            }
+        }
+
+        .button {
+            width: max-content;
+        }
+
+        .bt {
+            margin-right: 0.5em;
+        }
+
+        .btn {
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: transparent;
+            border: 2px solid #e74c3c;
+            border-radius: 0.6em;
+            color: #e74c3c;
+            cursor: pointer;
+            display: flex;
+            align-self: center;
+            font-size: 0.8rem;
+            font-weight: 400;
+            line-height: 1;
+            /* margin: 20px; */
+            margin-top: 1em;
+            padding: 0.8em 1.5em;
+            
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
+        }
+
+        .btn:hover,
+        .btn:focus {
+            color: #fff;
+            outline: 0;
+        }
+
+        .fourth {
+            border-color: #f1c40f;
+            color: #fff;
+            background-image: linear-gradient(45deg, #f1c40f 50%, transparent 50%);
+            background-position: 100%;
+            background-size: 400%;
+            transition: background 300ms ease-in-out;
+        }
+
+        .fourth:hover {
+            background-position: 0;
+        }
+    </style>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.css"
+        integrity="sha512-uq8QcHBpT8VQcWfwrVcH/n/B6ELDwKAdX4S/I3rYSwYldLVTs7iII2p6ieGCM13QTPEKZvItaNKBin9/3cjPAg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css"
+        integrity="sha512-TfnGOYsHIBHwx3Yg6u6jCWhqz79osu5accjEmw8KYID9zfWChaGyjDCmJIdy9fJjpvl9zXxZamkLam0kc5p/YQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/studentinfo",
+                success: function (data) {
+                    console.log(data);
+                    $('#myTable').DataTable({
+                        data: data,
+                        columns: [
+                            { data: 'firstname' },
+                            { data: 'lastname' },
+                            { data: 'contact' },
+                            { data: 'email' },
+                            { data: 'address.country' },
+                            { data: 'address.state' },
+                            { data: 'address.city' },
+                            {
+                                data: null,
+                                defaultContent: '<button style="background-color: #2c3e50;" class="btn fourth b1">Edit</button>',
+                                orderable: false
+                            },
+                            {
+                                data: null,
+                                render: function (data, type, full, meta){
+                                    return '<button style="background-color: #2c3e50;" class="btn fourth b2" id='+data.id+'>Delete</button>';
+                                }
+                                
+                            }
+
+                        ]
+                    });
+                }
+            });
+            document.getElementById("add").onclick = function () {
+           		location.href = "http://localhost:8080/view/addStudent";
+        	};
+        	
+        	
+        });
+
+    </script>
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <h1 >Student Assembly</h1>	<!-- contenteditable="true" -->
+            <div class="button">
+                <button style="background-color: #2c3e50;" class="btn fourth" id="add">Add Student</button>
+            </div>
+        </div>
+
+        <table class="styled-table" id="myTable">
+            <thead>
+
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+            </thead>
+            <tbody id="tbody">
+                <tr id="trow">
+					
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script lang="javascript">
+    	document.getElementById("add").onclick = function () {
+       		location.href = "http://localhost:8080/view/addStudent";
+    	}; 
+    </script>
+</body>
+
+</html>

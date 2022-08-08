@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Student form</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.css" integrity="sha512-uq8QcHBpT8VQcWfwrVcH/n/B6ELDwKAdX4S/I3rYSwYldLVTs7iII2p6ieGCM13QTPEKZvItaNKBin9/3cjPAg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css" integrity="sha512-TfnGOYsHIBHwx3Yg6u6jCWhqz79osu5accjEmw8KYID9zfWChaGyjDCmJIdy9fJjpvl9zXxZamkLam0kc5p/YQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-autocomplete/1.3.5/jquery.easy-autocomplete.min.js"></script>
+
+<script>
+$(document).ready(function () {  
+    $.ajax({  
+        type: "GET",  
+        url: "/api/country",   
+        success: function (data) {   
+            for (var i = 0; i < data.length; i++) {  
+            //	console.log(data[i]);
+            	$("#getCountry").append($("<option></option>").val(data[i].country_name).html(data[i].country_name));  
+            }  
+             
+        }  
+    });
+    $('#getCountry').on('change',function (e) {  
+        $.ajax({  
+            type: "GET",  
+            url: "/api/states/"+$('#getCountry :selected').text(),   
+            success: function (data) {  
+            	$("#getState").empty().append("<option> Select </option>")
+                for (var i = 0; i < data.length; i++) {  
+               // 	console.log(data[i]);
+                	$("#getState").append($("<option></option>").val(data[i].state_name).html(data[i].state_name));  
+                }  
+                 
+            }  
+        });  
+    });
+    $('#getState').on('change',function (e) {  
+        $.ajax({  
+            type: "GET",  
+            url: "/api/cities/"+$('#getState :selected').text(),   
+            success: function (data) {  
+            	$("#getCity").empty().append("<option> Select </option>")
+                for (var i = 0; i < data.length; i++) {  
+               // 	console.log(data[i]);
+                	$("#getCity").append($("<option></option>").val(data[i].city_name).html(data[i].city_name));  
+                }  
+                 
+            }  
+        });  
+    });
+    $('#submit').on('click',function (e) {
+    	e.preventDefault();
+    	 $('#lblName').text(JSON.stringify($("#myform").serializeArray()));
+        $.ajax({  
+        	
+            type: "POST",  
+            url: "/api/addStudent",   
+            data : JSON.stringify($("#myform").serializeArray()),
+            dataType : "json",
+            contentType : "application/json",
+            
+        });  
+       
+    });
+});
+
+
+
+</script>
+
+</head>
+<body>
+<label id="lblName">Hello</label>
+<!-- <input id="provider-remote" />-->
+	<form id="myform">
+		<div>
+			<label for="firstname">First Name : </label>
+			<input name="firstname" id="firstname">
+		</div>
+			<label for="lastname">Last Name : </label>
+			<input name="lastname" id="lastname">
+		<div>
+			<label for="contact">Contact No. :</label>
+			<input name="contact" id="contact">
+		</div>
+		<div>
+			<label for="email">Email : </label>
+			<input name="email" id="email">
+		</div>
+		
+		<div>
+			<label for="country"> Country : </label>
+			<select name = "country" id="getCountry">
+				<option value="Select">Select</option>
+			</select> 
+		</div>
+		<div>
+			<label for="state">State : </label>
+			<select name="state" id="getState">
+				<option value="Select">Select</option>
+			</select> 
+		</div>
+		<div>
+			<label for="city">City : </label>
+			<select name="city" id="getCity">
+				<option value="Select">Select</option>
+			</select>
+		</div>
+		<p><input id="submit" type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+	</form>
+     
+
+
+</body>
+</html>
